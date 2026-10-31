@@ -1,0 +1,293 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ذکرشمار حرفه‌ای</title>
+<style>
+*{box-sizing:border-box}
+:root{--a:#987cff}
+body{
+margin:0;background:#101522;color:white;
+font-family:Tahoma,sans-serif;
+min-height:100vh;
+background-image:radial-gradient(circle at top right,#38305d,transparent 50%);
+}
+.app{max-width:500px;margin:auto;padding:20px 15px 100px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+h2{font-size:21px;margin:0}
+.sub{font-size:12px;color:#aaa;margin-top:7px}
+.panel{
+background:rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.15);
+border-radius:24px;padding:20px;margin-bottom:16px;
+box-shadow:0 10px 30px #0002;
+}
+.diamond{display:inline-block;width:12px;height:12px;background:var(--a);transform:rotate(45deg);margin-left:12px}
+.counter{text-align:center;padding:25px 15px}
+.zekr{font-size:23px;margin:20px 0}
+.number{font-size:75px;font-weight:bold;color:var(--a)}
+.target{font-size:12px;color:#aaa;margin:10px}
+button{
+background:#ffffff12;color:white;border:1px solid #ffffff25;
+padding:13px;border-radius:14px;font-family:inherit;
+cursor:pointer;
+}
+button:active{opacity:.7}
+.countbtn{
+width:150px;height:150px;border-radius:50%;
+background:linear-gradient(140deg,var(--a),#5947bb);
+font-size:23px;font-weight:bold;margin:15px;
+box-shadow:0 10px 35px #8970ff55;
+}
+.progress{height:7px;background:#ffffff20;border-radius:20px;overflow:hidden;margin:20px 0}
+.bar{height:100%;width:0;background:var(--a);transition:.2s}
+.tabs{
+position:fixed;bottom:0;left:0;right:0;
+display:flex;justify-content:center;gap:5px;
+background:#171d2bf5;padding:12px;
+border-top:1px solid #ffffff20;
+}
+.tabs button{flex:1;max-width:120px;font-size:12px;padding:13px 3px}
+.active{background:var(--a)!important}
+.page{display:none}
+.page.show{display:block}
+.item{
+padding:15px;margin:9px 0;background:#ffffff0c;
+border:1px solid #ffffff20;border-radius:15px;
+display:flex;justify-content:space-between;align-items:center;
+cursor:pointer;
+}
+.item.selected{border-color:var(--a)}
+input{
+width:100%;padding:14px;margin:8px 0;
+border:1px solid #ffffff30;border-radius:12px;
+background:#ffffff10;color:white;font-family:inherit;
+}
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.theme{height:45px;border-radius:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{text-align:center;padding:20px 5px}
+.stat b{display:block;color:var(--a);font-size:28px;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+<div>
+<h2><span class="diamond"></span>ذکرشمار</h2>
+<div class="sub">آرامش در یاد خدا</div>
+</div>
+<button onclick="reset()">بازنشانی</button>
+</header>
+
+<div id="home" class="page show">
+<div class="panel counter">
+<div class="sub">ذکر انتخابی شما</div>
+<div class="zekr" id="name">سُبْحَانَ اللَّه</div>
+<div class="number" id="number">0</div>
+<div class="target" id="target">هدف: 100</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<button class="countbtn" onclick="add()">ذکر</button>
+</div>
+<div class="panel">
+<h3>ذکرهای محبوب</h3>
+<div id="quick"></div>
+</div>
+</div>
+
+<div id="azkar" class="page">
+<div class="panel">
+<h3>فهرست ذکرها</h3>
+<div id="list"></div>
+<h3>افزودن ذکر جدید</h3>
+<input id="newname" placeholder="نام ذکر">
+<input id="newgoal" type="number" value="100" placeholder="هدف">
+<button style="width:100%;background:var(--a)" onclick="createZekr()">افزودن</button>
+</div>
+</div>
+
+<div id="stats" class="page">
+<div class="panel">
+<h3>آمار شما</h3>
+<div class="stats">
+<div class="panel stat"><b id="total">0</b>مجموع ذکرها</div>
+<div class="panel stat"><b id="finished">0</b>اهداف تکمیل‌شده</div>
+</div>
+</div>
+</div>
+
+<div id="settings" class="page">
+<div class="panel">
+<h3>انتخاب تم</h3>
+<div class="themes">
+<button class="theme" style="background:#987cff" onclick="theme('#987cff')"></button>
+<button class="theme" style="background:#12b995" onclick="theme('#12b995')"></button>
+<button class="theme" style="background:#e5a33c" onclick="theme('#e5a33c')"></button>
+<button class="theme" style="background:#e65b91" onclick="theme('#e65b91')"></button>
+<button class="theme" style="background:#299ce8" onclick="theme('#299ce8')"></button>
+<button class="theme" style="background:#b477d9" onclick="theme('#b477d9')"></button>
+</div>
+</div>
+<div class="panel">
+<h3>اطلاعات برنامه</h3>
+<p class="sub">ذکرشمار حرفه‌ای - نسخه ۱</p>
+<button onclick="backup()" style="width:100%">پشتیبان‌گیری</button>
+</div>
+</div>
+</div>
+
+<nav class="tabs">
+<button class="active" onclick="showPage('home',this)">خانه</button>
+<button onclick="showPage('azkar',this)">ذکرها</button>
+<button onclick="showPage('stats',this)">آمار</button>
+<button onclick="showPage('settings',this)">تنظیمات</button>
+</nav>
+
+<script>
+var defaults=[
+{name:'سُبْحَانَ اللَّه',goal:100},
+{name:'الْحَمْدُ لِلَّه',goal:100},
+{name:'اللَّهُ أَکْبَر',goal:100},
+{name:'أَسْتَغْفِرُ اللَّه',goal:100},
+{name:'لا إِلَهَ إِلَّا اللَّه',goal:100},
+{name:'یا مهدی (عج)',goal:100}
+];
+
+var state;
+try{
+state=JSON.parse(localStorage.getItem('zekr_app'));
+}catch(e){state=null;}
+
+if(!state){
+state={
+items:defaults,
+selected:0,
+count:0,
+total:0,
+finished:0
+};
+}
+
+function save(){
+try{
+localStorage.setItem('zekr_app',JSON.stringify(state));
+}catch(e){}
+}
+
+function current(){
+return state.items[state.selected];
+}
+
+function render(){
+var z=current();
+document.getElementById('name').textContent=z.name;
+document.getElementById('number').textContent=state.count;
+document.getElementById('target').textContent='هدف: '+z.goal+' مرتبه';
+var percent=z.goal>0?Math.min(100,state.count/z.goal*100):0;
+document.getElementById('bar').style.width=percent+'%';
+document.getElementById('total').textContent=state.total;
+document.getElementById('finished').textContent=state.finished;
+
+var list=document.getElementById('list');
+var quick=document.getElementById('quick');
+list.innerHTML='';
+quick.innerHTML='';
+
+state.items.forEach(function(item,index){
+var el=document.createElement('div');
+el.className='item'+(index===state.selected?' selected':'');
+el.textContent=item.name+' — هدف: '+item.goal;
+el.onclick=function(){selectZekr(index);};
+list.appendChild(el);
+
+if(index<3){
+var q=document.createElement('div');
+q.className='item';
+q.textContent=item.name;
+q.onclick=function(){selectZekr(index);};
+quick.appendChild(q);
+}
+});
+}
+
+function add(){
+var z=current();
+if(state.count>=z.goal)return;
+state.count++;
+state.total++;
+if(state.count===z.goal){
+state.finished++;
+alert('آفرین! هدف این ذکر تکمیل شد.');
+}
+save();
+render();
+}
+
+function selectZekr(index){
+state.selected=index;
+state.count=0;
+save();
+render();
+showPage('home',document.querySelector('.tabs button'));
+}
+
+function reset(){
+if(confirm('شمارنده این ذکر صفر شود؟')){
+state.count=0;
+save();
+render();
+}
+}
+
+function createZekr(){
+var name=document.getElementById('newname').value.trim();
+var goal=parseInt(document.getElementById('newgoal').value,10);
+if(!name){alert('نام ذکر را بنویسید');return;}
+if(!goal||goal<1){alert('هدف معتبر وارد کنید');return;}
+state.items.push({name:name,goal:goal});
+state.selected=state.items.length-1;
+state.count=0;
+document.getElementById('newname').value='';
+save();
+render();
+showPage('home',document.querySelector('.tabs button'));
+}
+
+function showPage(id,button){
+document.querySelectorAll('.page').forEach(function(p){
+p.classList.remove('show');
+});
+document.getElementById(id).classList.add('show');
+document.querySelectorAll('.tabs button').forEach(function(b){
+b.classList.remove('active');
+});
+button.classList.add('active');
+}
+
+function theme(color){
+document.documentElement.style.setProperty('--a',color);
+try{localStorage.setItem('zekr_color',color);}catch(e){}
+}
+
+function backup(){
+var data=JSON.stringify(state,null,2);
+var blob=new Blob([data],{type:'application/json'});
+var url=URL.createObjectURL(blob);
+var a=document.createElement('a');
+a.href=url;
+a.download='zekr-backup.json';
+a.click();
+setTimeout(function(){URL.revokeObjectURL(url);},1000);
+}
+
+try{
+var color=localStorage.getItem('zekr_color');
+if(color)theme(color);
+}catch(e){}
+
+render();
+</script>
+</body>
+</html>
